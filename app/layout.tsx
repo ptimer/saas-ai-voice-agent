@@ -18,6 +18,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /* 
+    TODO: 
+    1. Create config file
+    2. All routes should be moved to one place as a config for example
+    3. Create e2e tests
+  */
+
   return (
     <html lang="en" className="dark">
       <body

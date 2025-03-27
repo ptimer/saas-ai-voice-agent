@@ -52,6 +52,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     }
   }
 
+  // TODO: logo as a component
   return (
     <div className="card-border lg:min-w-[566px]">
       <div className="flex flex-col gap-6 card py-14 px-10">
