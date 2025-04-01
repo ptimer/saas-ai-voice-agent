@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image"
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils"
 import { vapi } from "@/lib/vapi.sdk";
