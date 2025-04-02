@@ -4,18 +4,18 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
 import { getCurrentUser } from "@/lib/actions/auth.action";
-import { getLatestInterviews, getUserInterviewsByUserId } from "@/lib/actions/general.action";
+import { getLatestInterviews, getInterviewsByUserId } from "@/lib/actions/general.action";
 
 export default async function Home() {
   const user = await getCurrentUser();
 
   const [userInterviews, allInterviews] = await Promise.all([
-    await getUserInterviewsByUserId(user?.id!),
+    await getInterviewsByUserId(user?.id!),
     await getLatestInterviews({ userId: user?.id! })
   ])
 
-  const hasPastInterviews = userInterviews?.length > 0;
-  const hasUpcomingInterviews = allInterviews?.length > 0;
+  const hasPastInterviews = userInterviews?.length! > 0;
+  const hasUpcomingInterviews = allInterviews?.length! > 0;
 
   const composePastInterviews = () => {
     if (!hasPastInterviews) return <p>You haven&apos;t taken any interviews yet</p>
