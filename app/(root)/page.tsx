@@ -7,7 +7,7 @@ import { getCurrentUser, getLatestInterviews, getUserInterviewsByUserId } from "
 
 export default async function Home() {
   const user = await getCurrentUser();
-
+  console.log(user)
   const [userInterviews, allInterviews] = await Promise.all([
     await getUserInterviewsByUserId(user?.id!),
     await getLatestInterviews({ userId: user?.id! })
@@ -19,13 +19,13 @@ export default async function Home() {
   const composePastInterviews = () => {
     if (!hasPastInterviews) return <p>You haven&apos;t taken any interviews yet</p>
 
-    userInterviews?.map((interview) => <InterviewCard {...interview} key={interview.id} />)
+    return userInterviews?.map((interview) => <InterviewCard {...interview} key={interview.id} />)
   }
 
   const composeUpcomingInterviews = () => {
     if (!hasUpcomingInterviews) return <p>There are no new interviews available</p>
 
-    allInterviews?.map((interview) => <InterviewCard {...interview} key={interview.id} />)
+    return allInterviews?.map((interview) => <InterviewCard {...interview} key={interview.id} />)
   }
 
   return (
