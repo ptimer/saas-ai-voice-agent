@@ -3,9 +3,31 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
-import { dummyInterviews } from "@/constants";
+import { getCurrentUser, getLatestInterviews, getUserInterviewsByUserId } from "@/lib/actions/auth.action";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
+
+  const [userInterviews, allInterviews] = await Promise.all([
+    await getUserInterviewsByUserId(user?.id!),
+    await getLatestInterviews({ userId: user?.id! })
+  ])
+
+  const hasPastInterviews = userInterviews?.length > 0;
+  const hasUpcomingInterviews = allInterviews?.length > 0;
+
+  const composePastInterviews = () => {
+    if (!hasPastInterviews) return <p>You haven&apos;t taken any interviews yet</p>
+
+    userInterviews?.map((interview) => <InterviewCard {...interview} key={interview.id} />)
+  }
+
+  const composeUpcomingInterviews = () => {
+    if (!hasUpcomingInterviews) return <p>There are no new interviews available</p>
+
+    allInterviews?.map((interview) => <InterviewCard {...interview} key={interview.id} />)
+  }
+
   return (
     <>
       <section className="card-cta">
@@ -30,10 +52,7 @@ export default function Home() {
         <h2>Your Past Interviews</h2>
 
         <div className="interviews-section">
-          {dummyInterviews.map((interview) => (
-            <InterviewCard {...interview} key={interview.id} />
-          ))}
-          {/* <p>You haven&apos;t taken any interviews yet</p> */}
+          {composePastInterviews()}
         </div>
       </section>
 
@@ -41,10 +60,7 @@ export default function Home() {
         <h2>Take an Interview</h2>
 
         <div className="interviews-section">
-          {dummyInterviews.map((interview) => (
-            <InterviewCard {...interview} key={interview.id} />
-          ))}
-          {/* <p>There are no interviews available</p> */}
+          {composeUpcomingInterviews()}
         </div>
       </section>
     </>
